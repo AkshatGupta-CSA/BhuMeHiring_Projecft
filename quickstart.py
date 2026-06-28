@@ -28,7 +28,7 @@ def main(village_dir: str) -> None:
     village = load(village_dir)
     n_truth = 0 if village.example_truths is None else len(village.example_truths)
     print(f'Loaded {village.slug}')
-    print(f'  {len(village.plots)} plots · {n_truth} example truths · '
+    print(f'  {len(village.plots)} plots | {n_truth} example truths | '
           f'boundaries={"yes" if village.boundaries_path else "none"}')
 
     # 1) Look at the imagery under one plot — this is your substrate.
@@ -36,12 +36,12 @@ def main(village_dir: str) -> None:
     with open_imagery(village.imagery_path) as src:
         patch = patch_for_plot(src, village.plot(pn), pad_m=30)
     Image.fromarray(patch.image).save('patch_example.png')
-    print(f'  image patch under plot {pn}: {patch.image.shape} → saved patch_example.png')
+    print(f'  image patch under plot {pn}: {patch.image.shape} -> saved patch_example.png')
 
     # 2) Make a naive prediction (the floor to beat).
     preds = global_median_shift(village)
     out = write_predictions(Path(village_dir) / 'predictions.geojson', preds)
-    print(f'  wrote {len(preds)} predictions → {out}')
+    print(f'  wrote {len(preds)} predictions -> {out}')
 
     # 3) Self-score it against the example truths.
     print()

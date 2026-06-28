@@ -40,21 +40,21 @@ class Scorecard:
 
     def __str__(self) -> str:
         def f(x):
-            return '—' if x is None else (f'{x:.3f}' if isinstance(x, float) else str(x))
+            return '-' if x is None else (f'{x:.3f}' if isinstance(x, float) else str(x))
         lines = [
-            f'=== {self.village} · scored on {self.n_truth} example truths ===',
+            f'=== {self.village} | scored on {self.n_truth} example truths ===',
             f'coverage:    {self.n_corrected} corrected + {self.n_flagged} flagged',
             f'accuracy:    median IoU pred={f(self.median_iou_pred)} vs official='
             f'{f(self.median_iou_official)}  (improvement={f(self.median_improvement)}, '
             f'improved {f(self.improved_frac)})',
-            f'             median centroid err={f(self.median_centroid_err_m)} m · '
+            f'             median centroid err={f(self.median_centroid_err_m)} m | '
             f'accurate(IoU>=.5)={f(self.accurate_rate)}',
-            f'calibration: Spearman(conf,IoU)={f(self.spearman_conf_vs_iou)} · '
+            f'calibration: Spearman(conf,IoU)={f(self.spearman_conf_vs_iou)} | '
             f'AUC={f(self.auc_accurate_vs_conf)}   (higher = confidence tracks accuracy)',
-            f'restraint:   {"N/A — graded on the hidden set (no control plots here)" if not self.n_controls else f"false-shift {f(self.false_shift_rate)} over {self.n_controls} controls"}',
+            f'restraint:   {"N/A - graded on the hidden set (no control plots here)" if not self.n_controls else f"false-shift {f(self.false_shift_rate)} over {self.n_controls} controls"}',
         ]
         if self.violations:
-            lines.append(f'⚠ {len(self.violations)} schema issue(s): ' + '; '.join(self.violations[:5]))
+            lines.append(f'! {len(self.violations)} schema issue(s): ' + '; '.join(self.violations[:5]))
         return '\n'.join(lines)
 
 
